@@ -34,17 +34,20 @@ export function* roundSaga() {
     return yield put({ type: types.ROUND_INVALID });
   }
   yield put({ type: types.NAVIGATE, payload: routes.ROUND_GREEN });
-  const { greenTimeout } = yield race({
+  const { greenTimeout, result } = yield race({
     result: take(types.ROUND_CLICKED),
     greenTimeout: delay(config.ROUND_TIMEOUT),
   });
   if (!greenTimeout) {
-    yield put({ type: types.ROUND_VALID });
+    yield put({ type: types.ROUND_VALID, responseTime: result.payload });
+  } else {
+    yield put({ type: types.ROUND_INVALID });
   }
 }
 
 export function* roundsSaga(isRoundsCompleted) {
   yield put({ type: types.NAVIGATE, payload: routes.ROUNDS_INTRO });
+  yield take(types.ROUNDS_INTRO_END);
 
   while (true) {
     yield put({ type: types.ROUND_START });
@@ -69,11 +72,11 @@ export function* roundsSagaWatch() {
 export function* gameSaga() {
   while (true) {
     yield put({ type: types.ROUNDS_START });
-    yield take(types.ROUNDS_END);
+    yield take(types.ROUNDS_REPORT_END);
   }
 }
 
 export function* rootSaga() {
   yield take(types.INIT);
-  yield all([gameSaga(), roundSagaWatch, roundsSagaWatch, navigateWatch]);
+  yield all([gameSaga(), roundSagaWatch(), roundsSagaWatch(), navigateWatch()]);
 }

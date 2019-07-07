@@ -1,4 +1,4 @@
-import { sum, avg, compose, map } from '../src/logic/helpers';
+import { sum, avg, compose, map, last } from '../src/logic/helpers';
 
 test('sum', () => {
   expect(sum([1, 2, 3])).toBe(6);
@@ -32,4 +32,8 @@ test('compose avg map', () => {
       map(f)
     )([0, 1, 2])
   ).toBe(2);
+});
+
+test('last', () => {
+  expect(last([1, 2, 3])).toBe(3);
 });

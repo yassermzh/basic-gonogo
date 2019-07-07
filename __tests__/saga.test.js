@@ -2,7 +2,6 @@ import * as effects from 'redux-saga/effects';
 import { roundSaga, roundsSaga } from '../src/logic/sagas';
 import types from '../src/logic/types';
 import routes from '../src/logic/routes';
-import navigate from '../src/logic/navigate';
 
 describe('round saga', () => {
   let g, next;
@@ -18,11 +17,13 @@ describe('round saga', () => {
 
   it('valid try', () => {
     expect(next({ redTimeout: true })).toStrictEqual(
-      effects.put({type: types.NAVIGATE, payload: routes.ROUND_GRE}EN)
+      effects.put({ type: types.NAVIGATE, payload: routes.ROUND_GREEN })
     );
     next();
-    expect(next({ greenTimeout: false })).toStrictEqual(
-      effects.put({ type: types.ROUND_VALID })
+    expect(
+      next({ greenTimeout: false, result: { payload: 100 } })
+    ).toStrictEqual(
+      effects.put({ type: types.ROUND_VALID, responseTime: 100 })
     );
     expect(next()).toBe(undefined);
   });
@@ -45,7 +46,10 @@ describe('rounds saga', () => {
     const g = roundsSaga(isRoundsCompleted);
     const next = x => g.next(x).value;
 
-    expect(next()).toStrictEqual(effects.put({type: types.NAVIGATE, payload: routes.ROUNDS_INTRO}));
+    expect(next()).toStrictEqual(
+      effects.put({ type: types.NAVIGATE, payload: routes.ROUNDS_INTRO })
+    );
+    next();
     expect(next()).toStrictEqual(effects.put({ type: types.ROUND_START }));
     next();
     next();
@@ -53,6 +57,8 @@ describe('rounds saga', () => {
     next();
     next();
     expect(next()).toStrictEqual(effects.put({ type: types.ROUNDS_END }));
-    expect(next()).toStrictEqual(effects.put({type: types.NAVIGATE, payload: routes.ROUNDS_REPORT}));
+    expect(next()).toStrictEqual(
+      effects.put({ type: types.NAVIGATE, payload: routes.ROUNDS_REPORT })
+    );
   });
 });
