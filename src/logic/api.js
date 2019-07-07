@@ -1,4 +1,4 @@
 export const fetchRandomDelay = () =>
   new Promise(resolve => {
-    setTimeout(() => resolve(Math.floor(Math.random() * 100)), 100);
+    setTimeout(() => resolve(Math.floor(Math.random() * 2000)), 100);
   });

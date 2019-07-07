@@ -4,11 +4,10 @@ import { rootSaga } from './sagas';
 import reducer from './reducer';
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+export const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 
 store.subscribe(() => {
   console.log('state=', store.getState());
 });
 
 sagaMiddleware.run(rootSaga);
-
