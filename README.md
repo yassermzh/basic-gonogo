@@ -1,0 +1,7 @@
+- There is an introductory screen that explains the test 
+- When the user starts the test, the screen will turn red 
+- A random number is fetched using the random.org API, and the app waits for as many seconds 
+- The screen turns green 
+- The user taps a button as quickly as possible 
+- If the user taps the button before the screen turns green, the round is invalid 
+- After five valid rounds, the app displays the result and offers to restart the test
