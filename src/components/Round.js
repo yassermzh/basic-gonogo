@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { View, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import types from '../logic/types';
+import colors from './colors';
 
 const Round = ({ isGreen = false, dispatch }) => {
   const [startTime, setStartTime] = useState();
@@ -22,7 +23,7 @@ const Round = ({ isGreen = false, dispatch }) => {
       <View
         style={[
           styles.container,
-          { backgroundColor: isGreen ? 'green' : 'red' },
+          { backgroundColor: isGreen ? colors.green : colors.red },
         ]}
       />
     </TouchableWithoutFeedback>

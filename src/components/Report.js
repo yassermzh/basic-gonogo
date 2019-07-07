@@ -9,15 +9,17 @@ const Report = ({ roundsReport, rounds, dispatch }) => {
   };
   return (
     <View style={styles.container}>
-      <Text>Report!</Text>
-      <Text>Avg: {roundsReport}ms</Text>
+      <Text style={styles.title}>Report</Text>
+      <Text style={styles.avg}>Avg: {roundsReport}ms</Text>
       {rounds.map((round, idx) => (
-        <Text key={round.id}>
+        <Text key={round.id} style={styles.round}>
           {`#${idx}: `}
           {round.responseTime ? `${round.responseTime}ms` : 'invalid'}
         </Text>
       ))}
-      <Button title="ok" onPress={handleStart} />
+      <View style={styles.button}>
+        <Button title="Try Again" onPress={handleStart} />
+      </View>
     </View>
   );
 };
@@ -25,9 +27,26 @@ const Report = ({ roundsReport, rounds, dispatch }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    marginTop: 120,
     paddingLeft: 30,
     paddingRight: 30,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 10,
+  },
+  avg: {
+    fontSize: 21,
+    marginBottom: 10,
+  },
+  round: {
+    fontSize: 14,
+    color: 'grey',
+    marginTop: 8,
+  },
+  button: {
+    marginTop: 60,
   },
 });
 
