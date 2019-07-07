@@ -3,20 +3,19 @@
 Run saga manually to see how it works. Here the roundSaga will create
 following result:
 
-1: { type: 'PUT', payload: { type: 'round/start' } }
-2: { type: 'CALL', payload: 'fn: fetchRandomDelay , args: [ ]' }
-3: { type: 'CALL', payload: 'fn: navigate , args: [ round/red ]' }
-4: { type: 'RACE',
+1: { type: 'CALL', payload: 'fn: fetchRandomDelay , args: [ ]' }
+2: { type: 'CALL', payload: 'fn: navigate , args: [ round/red ]' }
+3: { type: 'RACE',
   payload:
    { result: { type: 'TAKE', payload: 'round/clicked' },
      redTimeout: { type: 'CALL', payload: 'fn: delayP , args: [ 1001 ]' } } }
-5: { type: 'CALL',
+4: { type: 'CALL',
   payload: 'fn: navigate , args: [ round/green ]' }
-6: { type: 'RACE',
+5: { type: 'RACE',
   payload:
    { result: { type: 'TAKE', payload: 'round/clicked' },
      greenTimeout: { type: 'CALL', payload: 'fn: delayP , args: [ 1000 ]' } } }
-7: { type: 'PUT', payload: { type: 'round/valid' } }
+6: { type: 'PUT', payload: { type: 'round/valid' } }
 
 */
 import { roundSaga } from './sagas';
@@ -50,10 +49,9 @@ const toString = obj => {
 const gen = roundSaga();
 
 console.log('1:', toString(gen.next()));
-console.log('2:', toString(gen.next()));
-console.log('3:', toString(gen.next(1001)));
-console.log('4:', toString(gen.next()));
-console.log('5:', toString(gen.next({ redTimeout: true })));
-console.log('6:', toString(gen.next()));
-console.log('7:', toString(gen.next({ greenTimeout: false })));
-console.log('8:', toString(gen.next()));
+console.log('2:', toString(gen.next(1001)));
+console.log('3:', toString(gen.next()));
+console.log('4:', toString(gen.next({ redTimeout: true })));
+console.log('5:', toString(gen.next()));
+console.log('6:', toString(gen.next({ greenTimeout: false })));
+console.log('7:', toString(gen.next()));

@@ -11,13 +11,21 @@ import {
 import types from './types';
 import routes from './routes';
 import { fetchRandomDelay } from './api';
-import navigate from './navigate';
 import config from './config';
 import * as selectors from './selectors';
 
+function* navigate({ payload: path }) {
+  const { history } = yield select();
+  yield call(history.replace, path);
+}
+
+function* navigateWatch() {
+  yield takeEvery(types.NAVIGATE, navigate);
+}
+
 export function* roundSaga() {
   const randomDelay = yield call(fetchRandomDelay);
-  yield call(navigate, routes.ROUND_RED);
+  yield put({ type: types.NAVIGATE, payload: routes.ROUND_RED });
   const { redTimeout } = yield race({
     result: take(types.ROUND_CLICKED),
     redTimeout: delay(randomDelay),
@@ -25,7 +33,7 @@ export function* roundSaga() {
   if (!redTimeout) {
     return yield put({ type: types.ROUND_INVALID });
   }
-  yield call(navigate, routes.ROUND_GREEN);
+  yield put({ type: types.NAVIGATE, payload: routes.ROUND_GREEN });
   const { greenTimeout } = yield race({
     result: take(types.ROUND_CLICKED),
     greenTimeout: delay(config.ROUND_TIMEOUT),
@@ -36,7 +44,7 @@ export function* roundSaga() {
 }
 
 export function* roundsSaga(isRoundsCompleted) {
-  yield call(navigate, routes.ROUNDS_INTRO);
+  yield put({ type: types.NAVIGATE, payload: routes.ROUNDS_INTRO });
 
   while (true) {
     yield put({ type: types.ROUND_START });
@@ -47,7 +55,7 @@ export function* roundsSaga(isRoundsCompleted) {
       break;
     }
   }
-  yield call(navigate, routes.ROUNDS_REPORT);
+  yield put({ type: types.NAVIGATE, payload: routes.ROUNDS_REPORT });
 }
 
 export function* roundSagaWatch() {
@@ -66,5 +74,6 @@ export function* gameSaga() {
 }
 
 export function* rootSaga() {
-  yield all([gameSaga(), roundSagaWatch, roundsSagaWatch]);
+  yield take(types.INIT);
+  yield all([gameSaga(), roundSagaWatch, roundsSagaWatch, navigateWatch]);
 }

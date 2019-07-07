@@ -7,11 +7,16 @@ const initialState = {
   roundsStatus: undefined,
   rounds: [],
   roundsReport: undefined,
+  history: undefined,
 };
 
 const reducer = (state = initialState, action) =>
   produce(state, draft => {
-    if (action.types === types.ROUNDS_START) {
+    console.log('dispatch: ', action);
+    if (action.type === types.INIT) {
+      draft.history = action.history;
+    }
+    if (action.type === types.ROUNDS_START) {
       draft.roundsStatus = 'STARTED';
       draft.rounds = [];
     }

@@ -18,7 +18,7 @@ describe('round saga', () => {
 
   it('valid try', () => {
     expect(next({ redTimeout: true })).toStrictEqual(
-      effects.call(navigate, routes.ROUND_GREEN)
+      effects.put({type: types.NAVIGATE, payload: routes.ROUND_GRE}EN)
     );
     next();
     expect(next({ greenTimeout: false })).toStrictEqual(
@@ -45,7 +45,7 @@ describe('rounds saga', () => {
     const g = roundsSaga(isRoundsCompleted);
     const next = x => g.next(x).value;
 
-    expect(next()).toStrictEqual(effects.call(navigate, routes.ROUNDS_INTRO));
+    expect(next()).toStrictEqual(effects.put({type: types.NAVIGATE, payload: routes.ROUNDS_INTRO}));
     expect(next()).toStrictEqual(effects.put({ type: types.ROUND_START }));
     next();
     next();
@@ -53,6 +53,6 @@ describe('rounds saga', () => {
     next();
     next();
     expect(next()).toStrictEqual(effects.put({ type: types.ROUNDS_END }));
-    expect(next()).toStrictEqual(effects.call(navigate, routes.ROUNDS_REPORT));
+    expect(next()).toStrictEqual(effects.put({type: types.NAVIGATE, payload: routes.ROUNDS_REPORT}));
   });
 });

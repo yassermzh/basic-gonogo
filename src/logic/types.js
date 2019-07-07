@@ -6,4 +6,6 @@ export default {
   ROUNDS_START: 'rounds/start',
   ROUNDS_INTRO: 'rounds/intro',
   ROUNDS_END: 'rounds/end',
+  INIT: 'init',
+  NAVIGATE: 'navigate',
 };
